@@ -3,7 +3,7 @@ package main
 import (
 	query "awesomeProject/db"
 	"fmt"
-	_ "github.com/gofiber/fiber/v2"
+	//_ "github.com/gofiber/fiber/v2"
 	_ "github.com/lib/pq"
 	"log"
 	"net/http"
