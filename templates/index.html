@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD em Go</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Navbar</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a class="nav-link" href="/users">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/names">Names</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/add">Insert</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" href="#">Disabled</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="container mt-5">
+    <h1>CRUD em Go</h1>
+    <form id="crudForm">
+        <div class="form-group">
+            <label for="name">Nome</label>
+            <input type="text" class="form-control" id="name" name="name">
+        </div>
+        <div class="form-group">
+            <label for="last-name">Sobrenome</label>
+            <input type="text" class="form-control" id="last-name" name="last-name">
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" id="email" name="email">
+        </div>
+        <div class="form-group">
+            <label for="cpf">CPF</label>
+            <input type="number" class="form-control" id="cpf" name="cpf">
+        </div>
+        <button type="submit" class="btn btn-primary" onclick="submitForm()" >Salvar</button>
+    </form>
+    <div id="message"></div>
+    <div id="usersList"></div>
+</div>
+<script>
+    function submitForm() {
+        // Obtém os valores do formulário
+        var name = document.getElementById("name").value;
+        var email = document.getElementById("email").value;
+        var lastName = document.getElementById("last-name").value
+        var cpf = document.getElementById("cpf").value
+
+        // Cria um objeto JSON com os dados do formulário
+        var formData = {
+            "name": name,
+            "last-name": lastName,
+            "email": email,
+            "cpf": cpf
+        };
+
+        // Envia uma requisição HTTP POST para o servidor Go
+        fetch('/insert', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro ao enviar os dadosss');
+                }
+                return response.text();
+            })
+            .then(data => {
+                console.log(data); // Exibe a resposta do servidor no console
+                alert('Inserção realizada com sucesso!');
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                alert('Erro ao enviar os dados');
+            });
+    }
+</script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+</body>
+</html>
